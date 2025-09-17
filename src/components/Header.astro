@@ -18,7 +18,7 @@ const species = pathname.startsWith("/species/") ? pathname.replace("/species/",
 
 <script>
   document.querySelector("#species")?.addEventListener("change", (evt) => {
-    const value = evt.target.value;
+    const value = (evt.target as HTMLSelectElement).value;
     if (value) {
       location.pathname = "/species/" + value;
     } else {
