@@ -1,0 +1,94 @@
+---
+import PlotFigure from "../components/PlotFigure.astro";
+import Layout from "../layouts/Layout.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../assets/penguins.json";
+import Header from "../components/Header.astro";
+import { Tabs, TabsList, TabsTab, TabsPanel } from "accessible-astro-components";
+
+const adelie = penguins.filter(d => d.species === "Adelie");
+const chinstrap = penguins.filter(d => d.species === "Chinstrap");
+const gentoo = penguins.filter(d => d.species === "Gentoo");
+---
+
+<Layout>
+  <Header />
+
+  <main class="container">
+    <h1 class="title">Penguins par espèce (onglets)</h1>
+
+    <Tabs>
+      <TabsList class="!flex !justify-center !gap-4 !mb-6">
+        <TabsTab id="tab-adelie" controls="panel-adelie" selected
+          class="!px-4 !py-2 !rounded-lg !font-semibold !bg-gray-200 !text-gray-800">
+          Adelie
+        </TabsTab>
+        <TabsTab id="tab-chinstrap" controls="panel-chinstrap"
+          class="!px-4 !py-2 !rounded-lg !font-semibold !bg-gray-200 !text-gray-800">
+          Chinstrap
+        </TabsTab>
+        <TabsTab id="tab-gentoo" controls="panel-gentoo"
+          class="!px-4 !py-2 !rounded-lg !font-semibold !bg-gray-200 !text-gray-800">
+          Gentoo
+        </TabsTab>
+      </TabsList>
+
+      <TabsPanel id="panel-adelie" labelledby="tab-adelie" selected class="!bg-white !rounded-2xl !p-6 !shadow-md">
+        <h2 class="!text-xl !font-bold !text-blue-600 !mb-4">Adelie Penguins</h2>
+        <PlotFigure
+          client:visible
+          options={{
+            marks: [Plot.dot(adelie, { x: "culmen_length_mm", y: "culmen_depth_mm", stroke: "species" })],
+          }}
+        />
+        <p class="!mt-4 !font-medium !text-green-500">
+          Number of Adelie Penguins: {adelie.length}
+        </p>
+      </TabsPanel>
+
+      <TabsPanel id="panel-chinstrap" labelledby="tab-chinstrap" class="!bg-white !rounded-2xl !p-6 !shadow-md">
+        <h2 class="!text-xl !font-bold !text-blue-600 !mb-4">Chinstrap Penguins</h2>
+        <PlotFigure
+          client:visible
+          options={{
+            marks: [Plot.dot(chinstrap, { x: "culmen_length_mm", y: "culmen_depth_mm", stroke: "species" })],
+          }}
+        />
+        <p class="!mt-4 !font-medium !text-green-500">
+          Number of Chinstrap Penguins: {chinstrap.length}
+        </p>
+      </TabsPanel>
+
+      <TabsPanel id="panel-gentoo" labelledby="tab-gentoo" class="!bg-white !rounded-2xl !p-6 !shadow-md">
+        <h2 class="!text-xl !font-bold !text-blue-600 !mb-4">Gentoo Penguins</h2>
+        <PlotFigure
+          client:visible
+          options={{
+            marks: [Plot.dot(gentoo, { x: "culmen_length_mm", y: "culmen_depth_mm", stroke: "species" })],
+          }}
+        />
+        <p class="!mt-4 !font-medium !text-green-500">
+          Number of Gentoo Penguins: {gentoo.length}
+        </p>
+      </TabsPanel>
+    </Tabs>
+  </main>
+</Layout>
+
+<style>
+  .container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    background: linear-gradient(90deg, #2563eb, #10b981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+</style>
