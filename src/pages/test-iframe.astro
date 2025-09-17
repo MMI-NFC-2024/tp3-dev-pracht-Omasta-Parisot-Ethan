@@ -6,25 +6,39 @@ import Layout from "../layouts/Layout.astro";
 <Layout>
   <Header />
   <h1 class="text-2xl font-extrabold mb-4 text-center bg-clip-text text-amber-50" style="background: linear-gradient(90deg,#2563eb,#10b981);">
-Penguins par espèce (iframe)</h1>
+    Penguins par espèce (iframe)
+  </h1>
+
   <nav>
-    <a href="/species/Adelie" target="penguinFrame">Adelie</a> |
-    <a href="/species/Chinstrap" target="penguinFrame">Chinstrap</a> |
-    <a href="/species/Gentoo" target="penguinFrame">Gentoo</a>
+    <select id="species-iframe">
+      <option value="/species/Adelie">Adelie</option>
+      <option value="/species/Chinstrap">Chinstrap</option>
+      <option value="/species/Gentoo">Gentoo</option>
+    </select>
   </nav>
+
   <iframe
-    name="penguinFrame"
+    id="penguinFrame"
     src="/species/Adelie"
     style="width:100%; min-height:600px; border:1px solid #ccc; margin-top:1rem; transition:height 0.2s;"
     onload="resizeIframe(this)"
   ></iframe>
+
   <script>
+    const selectIframe = document.querySelector("#species-iframe");
+    const iframe = document.querySelector("#penguinFrame");
+
+    selectIframe.addEventListener("change", (evt) => {
+      const value = (evt.target as HTMLSelectElement).value;
+      iframe.src = value;
+    });
+
     function resizeIframe(iframe) {
       try {
         setTimeout(() => {
           if (iframe.contentWindow && iframe.contentWindow.document.body) {
             const newHeight = iframe.contentWindow.document.body.scrollHeight;
-            iframe.style.height = (newHeight > 600 ? newHeight : 600) + 'px';
+            iframe.style.height = (newHeight > 600 ? newHeight : 600) + "px";
           }
         }, 150);
       } catch (e) {}
@@ -36,32 +50,20 @@ Penguins par espèce (iframe)</h1>
   nav {
     display: flex;
     justify-content: center;
-    gap: 2rem;
     margin: 1.5rem 0;
   }
 
-  nav a {
-    text-decoration: none;
-    font-weight: 600;
+  select {
+    padding: 0.25rem 0.5rem;
+    font-weight: 500;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background: white;
     color: #374151;
-    position: relative;
-    transition: color 0.2s ease;
+    transition: border-color 0.2s ease;
   }
 
-  nav a:hover {
-    color: #2563eb;
-  }
-
-  nav a::after {
-    content: "";
-    display: block;
-    height: 2px;
-    background: linear-gradient(90deg, #2563eb, #10b981);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-  }
-
-  nav a:hover::after {
-    transform: scaleX(1);
+  select:hover {
+    border-color: #2563eb;
   }
 </style>

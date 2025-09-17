@@ -17,9 +17,11 @@ const gentoo = penguins.filter(d => d.species === "Gentoo");
     <h1 class="title">Penguins par espèce</h1>
 
     <nav class="menu">
-      <a href="#adelie">Adelie</a>
-      <a href="#chinstrap">Chinstrap</a>
-      <a href="#gentoo">Gentoo</a>
+      <select id="species-hash">
+        <option value="#adelie">Adelie</option>
+        <option value="#chinstrap">Chinstrap</option>
+        <option value="#gentoo">Gentoo</option>
+      </select>
     </nav>
 
     <div class="slider">
@@ -54,6 +56,17 @@ const gentoo = penguins.filter(d => d.species === "Gentoo");
       </section>
     </div>
   </main>
+
+  <script>
+    const selectHash = document.querySelector("#species-hash");
+    selectHash.addEventListener("change", (evt) => {
+      location.hash = (evt.target as HTMLSelectElement).value;
+    });
+
+    if (location.hash) {
+      selectHash.value = location.hash;
+    }
+  </script>
 </Layout>
 
 <style>
@@ -76,33 +89,21 @@ const gentoo = penguins.filter(d => d.species === "Gentoo");
   .menu {
     display: flex;
     justify-content: center;
-    gap: 2rem;
     margin-bottom: 2rem;
   }
 
-  .menu a {
-    text-decoration: none;
-    font-weight: 600;
+  select {
+    padding: 0.25rem 0.5rem;
+    font-weight: 500;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background: white;
     color: #374151;
-    position: relative;
-    transition: color 0.2s ease;
+    transition: border-color 0.2s ease;
   }
 
-  .menu a:hover {
-    color: #2563eb;
-  }
-
-  .menu a::after {
-    content: "";
-    display: block;
-    height: 2px;
-    background: linear-gradient(90deg, #2563eb, #10b981);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-  }
-
-  .menu a:hover::after {
-    transform: scaleX(1);
+  select:hover {
+    border-color: #2563eb;
   }
 
   .slider {
