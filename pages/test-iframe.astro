@@ -1,0 +1,67 @@
+---
+import Header from "../components/Header.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <Header />
+  <h1 class="text-2xl font-extrabold mb-4 text-center bg-clip-text text-amber-50" style="background: linear-gradient(90deg,#2563eb,#10b981);">
+Penguins par espèce (iframe)</h1>
+  <nav>
+    <a href="/species/Adelie" target="penguinFrame">Adelie</a> |
+    <a href="/species/Chinstrap" target="penguinFrame">Chinstrap</a> |
+    <a href="/species/Gentoo" target="penguinFrame">Gentoo</a>
+  </nav>
+  <iframe
+    name="penguinFrame"
+    src="/species/Adelie"
+    style="width:100%; min-height:600px; border:1px solid #ccc; margin-top:1rem; transition:height 0.2s;"
+    onload="resizeIframe(this)"
+  ></iframe>
+  <script>
+    function resizeIframe(iframe) {
+      try {
+        setTimeout(() => {
+          if (iframe.contentWindow && iframe.contentWindow.document.body) {
+            const newHeight = iframe.contentWindow.document.body.scrollHeight;
+            iframe.style.height = (newHeight > 600 ? newHeight : 600) + 'px';
+          }
+        }, 150);
+      } catch (e) {}
+    }
+  </script>
+</Layout>
+
+<style>
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 1.5rem 0;
+  }
+
+  nav a {
+    text-decoration: none;
+    font-weight: 600;
+    color: #374151;
+    position: relative;
+    transition: color 0.2s ease;
+  }
+
+  nav a:hover {
+    color: #2563eb;
+  }
+
+  nav a::after {
+    content: "";
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, #2563eb, #10b981);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  nav a:hover::after {
+    transform: scaleX(1);
+  }
+</style>
