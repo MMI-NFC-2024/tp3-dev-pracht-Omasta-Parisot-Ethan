@@ -1,26 +1,31 @@
 ---
 const pathname = Astro.url.pathname;
+const species = pathname.startsWith("/species/") ? pathname.replace("/species/", "") : "";
 ---
 
 <header class="navbar">
   <div class="logo">My Data Viz</div>
   <nav>
-    <ul>
-      <li>
-        <a href="/" class={pathname === "/" ? "active" : ""}>Penguins</a>
-      </li>
-      <li>
-        <a href="/species/Adelie" class={pathname === "/species/Adelie" ? "active" : ""}>Adelie</a>
-      </li>
-      <li>
-        <a href="/species/Chinstrap" class={pathname === "/species/Chinstrap" ? "active" : ""}>Chinstrap</a>
-      </li>
-      <li>
-        <a href="/species/Gentoo" class={pathname === "/species/Gentoo" ? "active" : ""}>Gentoo</a>
-      </li>
-    </ul>
+    <a href="/" class={pathname === "/" ? "active" : ""}>Penguins</a>
+    <select id="species">
+      <option value="">-- Species --</option>
+      <option value="Adelie" selected={species === "Adelie"}>Adelie</option>
+      <option value="Chinstrap" selected={species === "Chinstrap"}>Chinstrap</option>
+      <option value="Gentoo" selected={species === "Gentoo"}>Gentoo</option>
+    </select>
   </nav>
 </header>
+
+<script>
+  document.querySelector("#species")?.addEventListener("change", (evt) => {
+    const value = evt.target.value;
+    if (value) {
+      location.pathname = "/species/" + value;
+    } else {
+      location.pathname = "/";
+    }
+  });
+</script>
 
 <style>
   .navbar {
@@ -44,12 +49,10 @@ const pathname = Astro.url.pathname;
     -webkit-text-fill-color: transparent;
   }
 
-  nav ul {
+  nav {
     display: flex;
+    align-items: center;
     gap: 1.5rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
   }
 
   nav a {
@@ -78,5 +81,19 @@ const pathname = Astro.url.pathname;
     height: 2px;
     border-radius: 1px;
     background: linear-gradient(90deg, #2563eb, #10b981);
+  }
+
+  select {
+    padding: 0.25rem 0.5rem;
+    font-weight: 500;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background: white;
+    color: #374151;
+    transition: border-color 0.2s ease;
+  }
+
+  select:hover {
+    border-color: #2563eb;
   }
 </style>
